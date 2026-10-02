@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FWE 英検準2級 Eメール問題 work採点</title>
+<style>
+:root{--navy:#17365d;--blue:#2f74c0;--green:#087f75;--line:#d8e2ed;--good:#157347;--warn:#a86400;--bad:#c73a3a;--text:#1f2d3d;--muted:#64748b}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;color:var(--text);background:linear-gradient(180deg,#edf5fc 0,#fff 260px);line-height:1.65}
+header{background:linear-gradient(135deg,var(--navy),#245d98);color:#fff;padding:27px 18px 34px}.wrap{max-width:1180px;margin:auto}.brand{font-size:13px;letter-spacing:.14em;opacity:.82}.title{font-size:clamp(24px,4vw,39px);font-weight:900;margin:4px 0}.subtitle{margin:0;opacity:.92}
+.layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);gap:20px;margin-top:-18px;padding:0 16px 45px}.card{background:#fff;border:1px solid rgba(216,226,237,.95);border-radius:16px;box-shadow:0 10px 28px rgba(32,61,91,.09);padding:22px}.card h2{font-size:20px;margin:0 0 14px;color:var(--navy)}.card h3{font-size:17px;margin:19px 0 8px;color:var(--navy)}
+.officialBox{background:#f8fbff;border-left:5px solid var(--blue);padding:15px 18px;border-radius:10px}.officialBox ul{margin:7px 0 0;padding-left:21px}.officialBox li{margin:3px 0}.field{margin:15px 0}.label{font-size:13px;font-weight:800;color:#43556a;margin-bottom:6px}
+input,textarea{width:100%;border:1px solid #bfcddd;border-radius:10px;padding:11px 13px;font:inherit;background:#fff}textarea{resize:vertical;font-family:Georgia,"Times New Roman",serif;font-size:16px;line-height:1.7}#receivedEmail{min-height:180px}#underlinedPart{min-height:72px}#reply{min-height:210px;font-size:17px}input:focus,textarea:focus{outline:3px solid rgba(47,116,192,.15);border-color:var(--blue)}
+.mailFrame{background:#fbfdff;border:1px solid var(--line);border-radius:12px;padding:14px}.fixedText{font-family:Georgia,"Times New Roman",serif;font-size:16px;color:#43556a}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.counter{font-weight:900}.counter.ok{color:var(--good)}.counter.short,.counter.long{color:var(--bad)}
+.buttons{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}button,.linkButton{border:0;border-radius:11px;padding:12px 17px;font:inherit;font-weight:850;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}button:disabled{opacity:.55;cursor:wait}.primary{color:#fff;background:linear-gradient(135deg,var(--green),#0f766e);box-shadow:0 7px 16px rgba(15,118,110,.2)}.secondary{background:#edf3f9;color:#284a6f}.ghost{background:#fff;border:1px solid #cbd7e4;color:#395775}.blueButton{color:#fff;background:linear-gradient(135deg,#2f74c0,#1f5c9d)}
+.notice{font-size:12px;color:var(--muted);margin-top:10px}.workflow{margin-top:18px;padding:16px;border:2px solid #9bc5ea;border-radius:14px;background:linear-gradient(180deg,#f7fcff,#eef7ff)}.workflowTitle{font-size:18px;font-weight:900;color:var(--navy)}.step{font-size:14px;margin:7px 0;color:#43556a}.status{min-height:23px;margin-top:9px;font-size:13px;font-weight:800;color:var(--green)}.jsonArea{min-height:190px!important;font-family:ui-monospace,SFMono-Regular,Menlo,monospace!important;font-size:13px!important;line-height:1.55!important}.empty{text-align:center;color:var(--muted);padding:38px 10px}.hidden{display:none!important}
+.scoreHero{text-align:center;padding:7px 0 15px}.scoreNum{font-size:57px;font-weight:950;color:var(--navy);line-height:1}.scoreMax{font-size:18px;color:var(--muted)}.level{display:inline-block;margin-top:9px;padding:5px 13px;border-radius:999px;font-weight:850;background:#e8f5ed;color:var(--good)}.rubric{display:grid;grid-template-columns:1fr 1fr;gap:10px}.rubricItem{border:1px solid var(--line);border-radius:11px;padding:11px}.rubricTop{display:flex;justify-content:space-between;font-weight:850}.bar{height:7px;background:#e8eef4;border-radius:999px;overflow:hidden;margin-top:8px}.bar span{display:block;height:100%;background:linear-gradient(90deg,#6da9df,#2f74c0)}
+.section{border-top:1px solid var(--line);padding-top:14px;margin-top:16px}.list{padding-left:20px;margin:7px 0}.list li{margin:6px 0}.annotated,.essayBox{font-family:Georgia,"Times New Roman",serif;font-size:17px;line-height:1.9;padding:14px;border-radius:10px;white-space:pre-wrap}.annotated{background:#fffaf2;border:1px solid #ead7b5}.essayBox{background:#f8fafc;border:1px solid var(--line)}
+.errorUnderline{text-decoration-line:underline;text-decoration-style:wavy;text-decoration-color:#d43f3a;text-decoration-thickness:2px;text-underline-offset:4px;background:#fff1f0}.styleUnderline{text-decoration-line:underline;text-decoration-style:dotted;text-decoration-color:#b86b00;text-decoration-thickness:2px;text-underline-offset:4px;background:#fff8e8}.errorCard,.styleCard,.reviewCard,.taskCard{margin:8px 0;padding:11px 13px;border-radius:8px}.errorCard{border-left:4px solid var(--bad);background:#fff5f4}.styleCard{border-left:4px solid var(--warn);background:#fffaf0}.reviewCard{border-left:4px solid var(--blue);background:#f4f9ff}.taskCard{border-left:4px solid var(--green);background:#f1fbf8}.errorTitle{font-weight:900;color:#b52d28}.styleTitle{font-weight:900;color:#8a5700}.reviewTitle{font-weight:900;color:#205c96}.tag{display:inline-block;border-radius:999px;padding:2px 9px;font-size:12px;font-weight:900;margin-left:5px}.pass{background:#dff4e8;color:#12653e}.fail{background:#fde5e2;color:#a52e29}
+.originalMeta{background:#f7f9fc;border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:14px;font-size:14px}.metaText{white-space:pre-wrap;max-height:150px;overflow:auto}.printOnly{display:none}.footer{text-align:center;color:#718096;font-size:12px;padding:8px 20px 35px}
+@media(max-width:850px){.layout{grid-template-columns:1fr;margin-top:-14px}#reply{min-height:190px}}@media print{body{background:#fff}header,.editorCard,.noPrint,.footer{display:none!important}.layout{display:block;margin:0;padding:0}.resultCard{box-shadow:none;border:0;padding:0}.printOnly{display:block}.card{box-shadow:none}.section{break-inside:avoid}@page{size:A4;margin:14mm}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><div class="brand">FWE WRITING LAB</div><div class="title">英検準2級 Eメール問題 work採点</div><p class="subtitle">返信内容・具体的な質問2つ・40〜50語・4観点16点満点を確認</p></div></header>
+<main class="wrap layout">
+<section class="card editorCard">
+  <h2>受信メールと返信答案</h2>
+  <div class="officialBox"><b>公式問題形式に沿ったチェック</b><ul><li>相手の質問に分かりやすく答える</li><li>下線部の特徴について、具体的な質問を2つする</li><li>解答部分を40〜50語で書く</li></ul></div>
+  <div class="field"><div class="label">相手の名前</div><input id="senderName" value="Alex" placeholder="例：Alex"></div>
+  <div class="field"><div class="label">受け取ったEメール全文</div><textarea id="receivedEmail" spellcheck="true" placeholder="Hi!&#10;I ...&#10;Do you think ...?&#10;Your friend,&#10;Alex"></textarea></div>
+  <div class="field"><div class="label">下線部（質問を2つする対象）</div><textarea id="underlinedPart" spellcheck="true" placeholder="Eメール中で下線が引かれている英文を入力"></textarea></div>
+  <div class="field"><div class="label">相手からの質問</div><input id="senderQuestion" spellcheck="true" placeholder="例：Do you think such skills will become more important in the future?"></div>
+  <div class="field"><div class="label">名前（任意）</div><input id="studentName" placeholder="例：Sena September 10"></div>
+  <div class="mailFrame"><div class="fixedText">Hi, <span id="senderGreeting">Alex</span>!</div><div class="fixedText">Thank you for your e-mail.</div><div class="field"><div class="label">生徒が書いた解答部分だけを入力</div><textarea id="reply" spellcheck="true" placeholder="I think ...&#10;... ?&#10;... ?"></textarea></div><div class="fixedText">Best wishes,</div></div>
+  <div class="toolbar"><div id="wordCounter" class="counter short">0 words</div><div class="notice">印刷済みの挨拶・結びは語数に含めません。</div></div>
+  <div class="workflow">
+    <div class="workflowTitle">workで採点する</div><div class="step">① 受信メール・下線部・質問・返信答案・採点基準をまとめてコピーします。</div>
+    <div class="buttons"><button id="copyPromptBtn" class="primary" type="button">① work採点用にコピー</button><a class="linkButton secondary" href="https://chatgpt.com/" target="_blank" rel="noopener">② workを開く</a></div><div id="copyStatus" class="status"></div>
+    <details><summary>コピーした採点指示を確認する</summary><textarea id="promptPreview" class="jsonArea" readonly></textarea></details>
+    <div class="field"><div class="label">③ workから返ってきたJSONを、ここへ貼り付ける</div><textarea id="jsonInput" class="jsonArea" placeholder='{"scores":{"content":4,"organization":4,"vocabulary":4,"grammar":4},...}'></textarea></div>
+    <div class="buttons"><button id="renderBtn" class="blueButton" type="button">④ 採点結果を表示</button><button id="clearBtn" class="ghost" type="button">すべてクリア</button></div><div id="jsonStatus" class="status"></div>
+  </div><div class="notice">※ 毎回この答案だけを独立して採点します。「明確な誤り」と「より自然な表現」は分けて判定します。</div>
+</section>
+<aside class="card resultCard" id="resultCard">
+  <h2>採点結果</h2><div id="emptyResult" class="empty">返信答案を入力し、workの採点結果を貼り付けてください。</div>
+  <div id="result" class="hidden"><div class="printOnly"><h1>英検準2級 Eメール問題 採点結果</h1></div>
+    <div class="originalMeta"><div><b>名前：</b><span id="resultName"></span></div><div><b>相手の質問：</b><span id="resultSenderQuestion"></span></div><div><b>下線部：</b><span id="resultUnderlined"></span></div><details><summary>受信メール全文</summary><div id="resultReceivedEmail" class="metaText"></div></details></div>
+    <div class="scoreHero"><div><span id="totalScore" class="scoreNum">0</span><span class="scoreMax"> / 16</span></div><div id="level" class="level"></div><div id="resultWordCount" class="notice"></div></div><div id="rubric" class="rubric"></div>
+    <div class="section"><h3>課題達成チェック</h3><div id="taskResult"></div></div><div class="section"><h3>元の返信（誤りに赤い下線）</h3><div id="annotatedReply" class="annotated"></div><div class="notice">赤い波線＝明確な誤り　オレンジの点線＝より自然な表現（減点なし）</div></div>
+    <div class="section"><h3>よかった点</h3><ul id="strengthList" class="list"></ul></div><div class="section"><h3>明確な文法・語彙・スペリングの誤り</h3><div id="errorList"></div></div><div class="section"><h3>より自然な表現（減点なし）</h3><div id="styleList"></div></div><div class="section"><h3>今回の弱点</h3><ul id="weaknessList" class="list"></ul></div><div class="section"><h3>次回、見直す点</h3><div id="reviewList"></div></div><div class="section"><h3>明確な誤りだけを直した全文</h3><div id="correctedReply" class="essayBox"></div></div><div class="section"><h3>40〜50語の改善例</h3><div id="improvedReply" class="essayBox"></div></div><div class="buttons noPrint"><button id="pdfBtn" class="secondary" type="button">PDF保存・印刷</button></div>
+  </div>
+</aside></main><div class="footer">FWE WRITING LAB — 英検公式の現行問題形式・4観点を反映した学習用採点補助ツール</div>
+<script>
+const $=id=>document.getElementById(id);
+function countWords(text){return (text.trim().match(/[A-Za-z]+(?:['’-][A-Za-z]+)*/g)||[]).length;}
+function updateCount(){const n=countWords($("reply").value);$("wordCounter").textContent=`${n} words`;$("wordCounter").className="counter "+(n>=40&&n<=50?"ok":n<40?"short":"long");}
+function buildPrompt(){
+  const sender=$("senderName").value.trim()||"Alex",received=$("receivedEmail").value.trim(),underlined=$("underlinedPart").value.trim(),senderQuestion=$("senderQuestion").value.trim(),reply=$("reply").value.trim(),name=$("studentName").value.trim(),wordCount=countWords(reply);
+  return `英検準2級ライティングのEメール問題として、以下の答案だけを毎回ゼロから採点してください。
+この会話内の以前の答案や採点結果には影響されないでください。
+
+【名前】
+${name||"未入力"}
+【相手の名前】
+${sender}
+【受け取ったEメール全文】
+${received}
+【Eメール中の下線部】
+${underlined}
+【相手からの質問】
+${senderQuestion}
+【生徒が書いた返信の解答部分】
+${reply}
+【機械的に数えた語数】
+${wordCount}語
+
+【公式問題形式】
+・相手の質問に分かりやすく答える。
+・下線部について理解を深めるため、下線部の特徴を問う具体的な質問を2つする。
+・解答部分の語数の目安は40〜50語。
+・Eメールに対応していない答案は0点になることがある。
+・問題用紙に印刷済みの "Hi, ${sender}!"、"Thank you for your e-mail."、"Best wishes," は答案・語数に含めない。
+
+【採点方法】
+英検公式の4観点に従い、内容・構成・語彙・文法を各0〜4点、合計16点で採点する。
+1. 内容：課題で求められた内容が含まれているか。Eメールに対応し、相手の質問への分かりやすい回答と、下線部の特徴を問う具体的で互いに異なる質問2つがあるかを評価する。
+2. 構成：返信全体の情報の流れが分かりやすく論理的か。回答と2つの質問が自然につながっているか。
+3. 語彙：課題にふさわしい語彙を正しい綴り・意味で使用しているか。
+4. 文法：文構造を正しく使い、完全な文で、必要に応じて文型のバリエーションがあるか。
+
+【Eメール課題の判定規則】
+・相手の質問に直接答えているかをanswered_sender_questionで判定する。単なる関連情報だけならfalse。
+・答案中の疑問文を実際に数え、question_countに整数で記録する。
+・各質問について、下線部の特徴・詳細を具体的に尋ねているか、受信メールにすでに答えが明記されていないか、もう一つの質問と実質的に重複していないかを判定する。
+・疑問符があるだけ、相手の質問の繰り返し、下線部と無関係、同内容の言い換え2つは「有効な具体的質問2つ」と数えない。
+・質問文に文法上の誤りがあっても意図が明確なら内容上は質問として数え、誤りは文法で評価する。意味が判別不能なら有効としない。
+・返信が受信メールに全く対応していない場合だけall_zero_recommendedをtrueにし、4観点をすべて0点にする。
+・40〜50語は目安。少しの超過・不足だけで機械的に全観点を大幅減点せず、内容の充足や簡潔さへの影響を評価する。
+
+【添削方針】
+・英検準2級として意味が通じる軽い不自然さだけで厳しく減点しない。
+・文法、語法、冠詞、単数複数、主語と動詞の一致、時制、助動詞、不定詞、動名詞、前置詞、疑問文の語順、スペリング、句読法の明確な誤りを答案順にすべて指摘する。
+・同じ一つの誤りを複数項目として重複させない。errorsのoriginalには答案中に実在する文字列を、大文字小文字も含め正確にコピーする。
+・「明確な誤り」と「より自然な表現」を区別し、自然さの提案だけでは文法点を下げない。
+・文法点は極端に厳しくしない。意味が通じる明確な軽い誤りが1〜2個なら通常3点を目安にする。
+・corrected_replyは元の内容を保ち、明確な誤りだけを直す。
+・improved_replyは元の回答と質問の意図をなるべく保ち、必要な3要素を満たす自然な40〜50語にする。
+・説明は生徒にも理解できる具体的な日本語にする。
+
+次のJSON形式だけを返してください。説明文、Markdown、コードフェンスは付けないでください。
+{
+  "scores":{"content":0,"organization":0,"vocabulary":0,"grammar":0},
+  "word_count":0,
+  "all_zero_recommended":false,
+  "task_analysis":{"responds_to_email":true,"answered_sender_question":true,"answer_details":"","question_count":0,"questions":[{"text":"","about_underlined_part":true,"specific":true,"not_already_answered":true,"distinct":true,"valid":true,"reason":""}],"has_two_valid_questions":true,"summary":""},
+  "strengths":[""],
+  "errors":[{"original":"","correction":"","rule":"","category":"grammar"}],
+  "style_suggestions":[{"original":"","suggestion":"","reason":""}],
+  "weaknesses":[""],
+  "review_points":[""],
+  "corrected_reply":"",
+  "improved_reply":""
+}
+誤りや提案がない配列は空配列 [] にしてください。`;
+}
+async function copyText(text){if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(text);return;}const t=document.createElement("textarea");t.value=text;t.style.position="fixed";t.style.left="-9999px";document.body.appendChild(t);t.focus();t.select();const ok=document.execCommand("copy");t.remove();if(!ok)throw new Error("コピーに失敗しました");}
+function escapeHtml(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);}
+function stripCodeFence(text){let s=text.trim().replace(/^```(?:json)?\s*/i,"").replace(/\s*```$/,"");const a=s.indexOf("{"),b=s.lastIndexOf("}");return a>=0&&b>a?s.slice(a,b+1):s;}
+function validScore(value){const n=Number(value);return Number.isFinite(n)?Math.max(0,Math.min(4,Math.round(n))):0;}
+function getRanges(text,data){const ranges=[];const add=(items,type)=>(items||[]).forEach((item,index)=>{const phrase=String(item.original||"").trim();if(!phrase)return;const lower=text.toLowerCase(),needle=phrase.toLowerCase();let pos=0;while(pos<text.length){const start=lower.indexOf(needle,pos);if(start<0)break;ranges.push({start,end:start+phrase.length,type,index,length:phrase.length});pos=start+Math.max(1,phrase.length);}});add(data.errors,"error");add(data.style_suggestions,"style");ranges.sort((a,b)=>a.start-b.start||(a.type==="error"?-1:1)||b.length-a.length);const accepted=[];ranges.forEach(r=>{if(!accepted.some(e=>r.start<e.end&&r.end>e.start))accepted.push(r);});return accepted.sort((a,b)=>a.start-b.start);}
+function annotate(text,data){const ranges=getRanges(text,data);if(!ranges.length)return escapeHtml(text);let out="",pos=0;ranges.forEach(r=>{out+=escapeHtml(text.slice(pos,r.start));out+=`<span class="${r.type==="error"?"errorUnderline":"styleUnderline"}">${escapeHtml(text.slice(r.start,r.end))}</span>`;pos=r.end;});return out+escapeHtml(text.slice(pos));}
+function renderList(el,items,empty){const a=(items||[]).filter(Boolean);el.innerHTML=a.length?a.map(x=>`<li>${escapeHtml(x)}</li>`).join(""):`<li>${escapeHtml(empty)}</li>`;}
+function boolTag(value){return `<span class="tag ${value?"pass":"fail"}">${value?"OK":"要確認"}</span>`;}
+function renderTask(data){const task=data.task_analysis||{},qs=Array.isArray(task.questions)?task.questions:[];let html=`<div class="taskCard"><div><b>Eメールに対応：</b>${boolTag(task.responds_to_email!==false)}</div><div><b>相手の質問への回答：</b>${boolTag(task.answered_sender_question===true)}</div><div>${escapeHtml(task.answer_details||"説明なし")}</div></div>`;html+=`<div class="taskCard"><div><b>見つかった質問：</b>${Number.isFinite(Number(task.question_count))?Number(task.question_count):qs.length}個</div><div><b>有効な具体的質問が2つ：</b>${boolTag(task.has_two_valid_questions===true)}</div></div>`;if(qs.length)html+=qs.map((q,i)=>`<div class="reviewCard"><div class="reviewTitle">質問 ${i+1} ${boolTag(q.valid===true)}</div><div><b>英文：</b>${escapeHtml(q.text||"")}</div><div><b>下線部について：</b>${q.about_underlined_part===true?"はい":"いいえ"} ／ <b>具体的：</b>${q.specific===true?"はい":"いいえ"}</div><div><b>本文に答えが未記載：</b>${q.not_already_answered===true?"はい":"いいえ"} ／ <b>もう一方と別内容：</b>${q.distinct===true?"はい":"いいえ"}</div><div>${escapeHtml(q.reason||"")}</div></div>`).join("");if(task.summary)html+=`<div class="taskCard"><b>内容評価：</b> ${escapeHtml(task.summary)}</div>`;$("taskResult").innerHTML=html;}
+function renderResult(data){
+  const original=$("reply").value.trim(),content=validScore(data.scores?.content),organization=validScore(data.scores?.organization),vocabulary=validScore(data.scores?.vocabulary),grammar=validScore(data.scores?.grammar),total=content+organization+vocabulary+grammar;
+  $("emptyResult").classList.add("hidden");$("result").classList.remove("hidden");$("resultName").textContent=$("studentName").value.trim()||"未入力";$("resultSenderQuestion").textContent=$("senderQuestion").value.trim()||"未入力";$("resultUnderlined").textContent=$("underlinedPart").value.trim()||"未入力";$("resultReceivedEmail").textContent=$("receivedEmail").value.trim()||"未入力";
+  $("totalScore").textContent=total;$("level").textContent=total>=14?"とてもよい":total>=11?"合格圏":total>=8?"もう一歩":"基本を見直そう";const ai=Number(data.word_count),wc=Number.isFinite(ai)?ai:countWords(original);$("resultWordCount").textContent=`${wc} words ｜ ${wc>=40&&wc<=50?"40〜50語に収まっています":"40〜50語を目安に調整しましょう"}`;
+  $("rubric").innerHTML=[["内容",content],["構成",organization],["語彙",vocabulary],["文法",grammar]].map(([label,score])=>`<div class="rubricItem"><div class="rubricTop"><span>${label}</span><span>${score} / 4</span></div><div class="bar"><span style="width:${score*25}%"></span></div></div>`).join("");renderTask(data);$("annotatedReply").innerHTML=annotate(original,data);renderList($("strengthList"),data.strengths,"特に記載された長所はありません。");
+  const errors=(data.errors||[]).filter(x=>x&&(x.original||x.correction||x.rule));$("errorList").innerHTML=errors.length?errors.map((x,i)=>`<div class="errorCard"><div class="errorTitle">間違い ${i+1}</div><div><b>誤り：</b><u>${escapeHtml(x.original)}</u></div><div><b>修正：</b>${escapeHtml(x.correction)}</div><div><b>復習ルール：</b>${escapeHtml(x.rule)}</div></div>`).join(""):`<div class="taskCard">明確な文法・語彙・スペリングの誤りはありません。</div>`;
+  const styles=(data.style_suggestions||[]).filter(x=>x&&(x.original||x.suggestion||x.reason));$("styleList").innerHTML=styles.length?styles.map((x,i)=>`<div class="styleCard"><div class="styleTitle">表現提案 ${i+1}</div><div><b>元：</b>${escapeHtml(x.original)}</div><div><b>提案：</b>${escapeHtml(x.suggestion)}</div><div><b>理由：</b>${escapeHtml(x.reason)}</div></div>`).join(""):`<div class="taskCard">特になし</div>`;renderList($("weaknessList"),data.weaknesses,"大きな弱点は指摘されていません。");
+  const reviews=(data.review_points||[]).filter(Boolean);$("reviewList").innerHTML=reviews.length?reviews.map((x,i)=>`<div class="reviewCard"><div class="reviewTitle">見直し ${i+1}</div><div>${escapeHtml(x)}</div></div>`).join(""):`<div class="taskCard">今回、特に追加された見直し事項はありません。</div>`;$("correctedReply").textContent=data.corrected_reply||original;$("improvedReply").textContent=data.improved_reply||"";$("resultCard").scrollIntoView({behavior:"smooth",block:"start"});
+}
+$("senderName").addEventListener("input",()=>{$("senderGreeting").textContent=$("senderName").value.trim()||"Alex";});$("reply").addEventListener("input",updateCount);
+$("copyPromptBtn").addEventListener("click",async()=>{if(!$("receivedEmail").value.trim()||!$("underlinedPart").value.trim()||!$("senderQuestion").value.trim()){alert("受信メール・下線部・相手からの質問をすべて入力してください。");return;}if(countWords($("reply").value)<5){alert("先に返信答案を入力してください。");return;}const prompt=buildPrompt();$("promptPreview").value=prompt;$("copyPromptBtn").disabled=true;$("copyStatus").textContent="コピーしています…";try{await copyText(prompt);$("copyStatus").textContent="✓ コピーしました。workを開いて貼り付け、送信してください。";}catch(e){$("copyStatus").textContent="自動コピーできませんでした。下の採点指示を手動でコピーしてください。";document.querySelector("details").open=true;$("promptPreview").focus();$("promptPreview").select();}finally{$("copyPromptBtn").disabled=false;}});
+$("renderBtn").addEventListener("click",()=>{$("jsonStatus").textContent="";try{const text=stripCodeFence($("jsonInput").value);if(!text)throw new Error("JSONが貼り付けられていません。");const data=JSON.parse(text);if(!data.scores)throw new Error("scoresが見つかりません。");renderResult(data);$("jsonStatus").textContent="✓ 採点結果を表示しました。";}catch(e){console.error(e);$("jsonStatus").textContent="JSONを読み込めませんでした。workの回答全体をそのまま貼り付けてください。";alert("採点結果の読み込みに失敗しました。\n\n"+e.message+"\n\nworkに『JSONだけをもう一度出してください』と伝えてください。");}});
+$("clearBtn").addEventListener("click",()=>{["receivedEmail","underlinedPart","senderQuestion","studentName","reply","jsonInput","promptPreview"].forEach(id=>$(id).value="");$("senderName").value="Alex";$("senderGreeting").textContent="Alex";$("copyStatus").textContent="";$("jsonStatus").textContent="";$("result").classList.add("hidden");$("emptyResult").classList.remove("hidden");updateCount();});$("pdfBtn").addEventListener("click",()=>window.print());updateCount();
+</script>
+</body>
+</html>

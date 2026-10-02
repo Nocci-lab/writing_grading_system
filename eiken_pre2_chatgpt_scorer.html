@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FWE 英検準2級 Workライティング採点</title>
+<style>
+:root{
+  --navy:#17365d;--blue:#2f74c0;--green:#087f75;
+  --light:#f4f8fc;--line:#d8e2ed;--good:#157347;
+  --warn:#a86400;--bad:#c73a3a;--text:#1f2d3d;--muted:#64748b
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",
+  "Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+  color:var(--text);background:linear-gradient(180deg,#edf5fc 0,#fff 260px);
+  line-height:1.65
+}
+header{
+  background:linear-gradient(135deg,var(--navy),#245d98);
+  color:#fff;padding:27px 18px 34px
+}
+.wrap{max-width:1180px;margin:auto}
+.brand{font-size:13px;letter-spacing:.14em;opacity:.82}
+.title{font-size:clamp(25px,4vw,40px);font-weight:900;margin:4px 0}
+.subtitle{margin:0;opacity:.92}
+.layout{
+  display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);
+  gap:20px;margin-top:-18px;padding:0 16px 45px
+}
+.card{
+  background:#fff;border:1px solid rgba(216,226,237,.95);
+  border-radius:16px;box-shadow:0 10px 28px rgba(32,61,91,.09);
+  padding:22px
+}
+.card h2{font-size:20px;margin:0 0 14px;color:var(--navy)}
+.card h3{font-size:17px;margin:19px 0 8px;color:var(--navy)}
+.problem{
+  background:#f8fbff;border-left:5px solid var(--blue);
+  padding:16px 18px;border-radius:10px
+}
+.question{font-size:19px;font-weight:800;margin:4px 0 12px}
+.points{display:flex;gap:8px;flex-wrap:wrap}
+.pill{
+  padding:5px 11px;border-radius:999px;background:#e9f2fb;
+  color:#205c96;font-size:13px;font-weight:800
+}
+.instruction{
+  font-size:15px;font-weight:900;color:var(--navy);margin-top:13px
+}
+.field{margin:15px 0}
+.label{font-size:13px;font-weight:800;color:#43556a;margin-bottom:6px}
+input,select,textarea{
+  width:100%;border:1px solid #bfcddd;border-radius:10px;
+  padding:11px 13px;font:inherit;background:#fff
+}
+textarea{
+  min-height:245px;resize:vertical;font-family:Georgia,"Times New Roman",serif;
+  font-size:17px;line-height:1.75
+}
+input:focus,select:focus,textarea:focus{
+  outline:3px solid rgba(47,116,192,.15);border-color:var(--blue)
+}
+.miniGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.toolbar{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:10px;flex-wrap:wrap
+}
+.counter{font-weight:900}
+.counter.ok{color:var(--good)}
+.counter.short,.counter.long{color:var(--bad)}
+.buttons{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+button,.linkButton{
+  border:0;border-radius:11px;padding:12px 17px;font:inherit;
+  font-weight:850;cursor:pointer;text-decoration:none;display:inline-flex;
+  align-items:center;justify-content:center
+}
+button:disabled{opacity:.55;cursor:wait}
+.primary{
+  color:#fff;background:linear-gradient(135deg,var(--green),#0f766e);
+  box-shadow:0 7px 16px rgba(15,118,110,.2)
+}
+.secondary{background:#edf3f9;color:#284a6f}
+.ghost{background:#fff;border:1px solid #cbd7e4;color:#395775}
+.blueButton{
+  color:#fff;background:linear-gradient(135deg,#2f74c0,#1f5c9d)
+}
+.notice{font-size:12px;color:var(--muted);margin-top:10px}
+.workflow{
+  margin-top:18px;padding:16px;border:2px solid #9bc5ea;
+  border-radius:14px;background:linear-gradient(180deg,#f7fcff,#eef7ff)
+}
+.workflowTitle{font-size:18px;font-weight:900;color:var(--navy)}
+.step{font-size:14px;margin:7px 0;color:#43556a}
+.status{
+  min-height:23px;margin-top:9px;font-size:13px;font-weight:800;color:var(--green)
+}
+.jsonArea{
+  min-height:190px!important;font-family:ui-monospace,SFMono-Regular,Menlo,monospace!important;
+  font-size:13px!important;line-height:1.55!important
+}
+.empty{text-align:center;color:var(--muted);padding:38px 10px}
+.hidden{display:none!important}
+.scoreHero{text-align:center;padding:7px 0 15px}
+.scoreNum{font-size:57px;font-weight:950;color:var(--navy);line-height:1}
+.scoreMax{font-size:18px;color:var(--muted)}
+.level{
+  display:inline-block;margin-top:9px;padding:5px 13px;border-radius:999px;
+  font-weight:850;background:#e8f5ed;color:var(--good)
+}
+.rubric{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rubricItem{border:1px solid var(--line);border-radius:11px;padding:11px}
+.rubricTop{display:flex;justify-content:space-between;font-weight:850}
+.bar{height:7px;background:#e8eef4;border-radius:999px;overflow:hidden;margin-top:8px}
+.bar span{
+  display:block;height:100%;background:linear-gradient(90deg,#6da9df,#2f74c0)
+}
+.section{border-top:1px solid var(--line);padding-top:14px;margin-top:16px}
+.list{padding-left:20px;margin:7px 0}
+.list li{margin:6px 0}
+.annotated,.essayBox{
+  font-family:Georgia,"Times New Roman",serif;font-size:17px;line-height:1.9;
+  padding:14px;border-radius:10px;white-space:pre-wrap
+}
+.annotated{background:#fffaf2;border:1px solid #ead7b5}
+.essayBox{background:#f8fafc;border:1px solid var(--line)}
+.errorUnderline{
+  text-decoration-line:underline;text-decoration-style:wavy;
+  text-decoration-color:#d43f3a;text-decoration-thickness:2px;
+  text-underline-offset:4px;background:#fff1f0
+}
+.styleUnderline{
+  text-decoration-line:underline;text-decoration-style:dotted;
+  text-decoration-color:#b86b00;text-decoration-thickness:2px;
+  text-underline-offset:4px;background:#fff8e8
+}
+.errorCard,.styleCard,.reviewCard,.pointCard{
+  margin:8px 0;padding:11px 13px;border-radius:8px
+}
+.errorCard{border-left:4px solid var(--bad);background:#fff5f4}
+.styleCard{border-left:4px solid var(--warn);background:#fffaf0}
+.reviewCard{border-left:4px solid var(--blue);background:#f4f9ff}
+.pointCard{border-left:4px solid var(--green);background:#f1fbf8}
+.errorTitle{font-weight:900;color:#b52d28}
+.styleTitle{font-weight:900;color:#8a5700}
+.reviewTitle{font-weight:900;color:#205c96}
+.originalMeta{
+  background:#f7f9fc;border:1px solid var(--line);border-radius:10px;
+  padding:12px;margin-bottom:14px;font-size:14px
+}
+.printOnly{display:none}
+.footer{text-align:center;color:#718096;font-size:12px;padding:8px 20px 35px}
+@media(max-width:850px){
+  .layout{grid-template-columns:1fr;margin-top:-14px}
+  textarea{min-height:215px}
+}
+@media print{
+  body{background:#fff}
+  header,.editorCard,.noPrint,.footer{display:none!important}
+  .layout{display:block;margin:0;padding:0}
+  .resultCard{box-shadow:none;border:0;padding:0}
+  .printOnly{display:block}
+  .card{box-shadow:none}
+  .section{break-inside:avoid}
+  @page{size:A4;margin:14mm}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand">FWE WRITING LAB</div>
+    <div class="title">英検準2級 ChatGPTライティング採点</div>
+    <p class="subtitle">正確な添削・弱点分析・復習事項・16点満点の採点</p>
+  </div>
+</header>
+
+<main class="wrap layout">
+<section class="card editorCard">
+  <h2>問題と作文</h2>
+
+  <div class="field">
+    <div class="label">問題を選ぶ</div>
+    <select id="problemSelect"></select>
+  </div>
+
+  <div class="problem">
+    <div class="label">QUESTION</div>
+    <div class="question" id="questionText"></div>
+
+    <div class="label">POINTS</div>
+    <div class="points" id="pointsBox"></div>
+
+    <div class="instruction">
+      Write 50–60 words.（50〜60語で書きなさい。）
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="label">名前（任意）</div>
+    <input id="studentName" placeholder="例：Malei">
+  </div>
+
+  <div class="field">
+    <div class="label">英文を入力</div>
+    <textarea id="essay" spellcheck="true"
+      placeholder="I think that ..."></textarea>
+  </div>
+
+  <div class="toolbar">
+    <div id="wordCounter" class="counter short">0 words</div>
+    <div class="notice">作文は自動保存されません。</div>
+  </div>
+
+  <div class="workflow">
+    <div class="workflowTitle">ChatGPTで採点する</div>
+
+    <div class="step">
+      ① 問題・POINTS・作文・採点基準をまとめてコピーします。
+    </div>
+
+    <div class="buttons">
+      <button id="copyPromptBtn" class="primary" type="button">
+        ① ChatGPT採点用にコピー
+      </button>
+
+      <a class="linkButton secondary"
+         href="https://chatgpt.com/"
+         target="_blank" rel="noopener">
+        ② ChatGPTを開く
+      </a>
+    </div>
+
+    <div id="copyStatus" class="status"></div>
+
+    <details>
+      <summary>コピーした採点指示を確認する</summary>
+      <textarea id="promptPreview" class="jsonArea"
+        readonly></textarea>
+    </details>
+
+    <div class="field">
+      <div class="label">
+        ③ ChatGPTから返ってきたJSONを、ここへ貼り付ける
+      </div>
+      <textarea id="jsonInput" class="jsonArea"
+        placeholder='{"scores":{"content":4,...}}'></textarea>
+    </div>
+
+    <div class="buttons">
+      <button id="renderBtn" class="blueButton" type="button">
+        ④ 採点結果を表示
+      </button>
+      <button id="clearBtn" class="ghost" type="button">
+        すべてクリア
+      </button>
+    </div>
+
+    <div id="jsonStatus" class="status"></div>
+  </div>
+
+  <div class="notice">
+    ※ ChatGPTには、毎回この答案だけを最初から確認するよう指示します。
+    「より自然な表現」と「減点対象の明確な誤り」は分けて判定します。
+  </div>
+</section>
+
+<aside class="card resultCard" id="resultCard">
+  <h2>採点結果</h2>
+
+  <div id="emptyResult" class="empty noPrint">
+    作文を入力し、ChatGPTの採点結果を貼り付けてください。
+  </div>
+
+  <div id="result" class="hidden">
+    <div class="printOnly">
+      <h1>英検準2級 ライティング採点結果｜Work</h1>
+    </div>
+
+    <div class="originalMeta">
+      <div><b>名前：</b><span id="resultName"></span></div>
+      <div><b>QUESTION：</b><span id="resultQuestion"></span></div>
+      <div><b>POINTS：</b><span id="resultPoints"></span></div>
+    </div>
+
+    <div class="scoreHero">
+      <div>
+        <span id="totalScore" class="scoreNum">0</span>
+        <span class="scoreMax"> / 16</span>
+      </div>
+      <div id="level" class="level"></div>
+      <div id="resultWordCount" class="notice"></div>
+    </div>
+
+    <div id="rubric" class="rubric"></div>
+
+    <div class="section">
+      <h3>元の作文（誤りに赤い下線）</h3>
+      <div id="annotatedEssay" class="annotated"></div>
+      <div class="notice">
+        赤い波線＝明確な誤り　
+        オレンジの点線＝より自然な表現の提案（減点なし）
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>よかった点</h3>
+      <ul id="strengthList" class="list"></ul>
+    </div>
+
+    <div class="section">
+      <h3>明確な文法・スペリングの誤り</h3>
+      <div id="errorList"></div>
+    </div>
+
+    <div class="section">
+      <h3>より自然な表現（減点なし）</h3>
+      <div id="styleList"></div>
+    </div>
+
+    <div class="section">
+      <h3>今回の弱点</h3>
+      <ul id="weaknessList" class="list"></ul>
+    </div>
+
+    <div class="section">
+      <h3>次回、見直す点</h3>
+      <div id="reviewList"></div>
+    </div>
+
+    <div class="section">
+      <h3>POINTSの使用</h3>
+      <div id="pointsResult" class="pointCard"></div>
+    </div>
+
+    <div class="section">
+      <h3>明確な誤りだけを直した全文</h3>
+      <div id="correctedEssay" class="essayBox"></div>
+    </div>
+
+    <div class="section">
+      <h3>50〜60語の改善例</h3>
+      <div id="improvedEssay" class="essayBox"></div>
+    </div>
+
+    <div class="buttons noPrint">
+      <button id="pdfBtn" class="secondary" type="button">
+        PDF保存・印刷
+      </button>
+    </div>
+  </div>
+</aside>
+</main>
+
+<div class="footer">
+  FWE WRITING LAB — 無料・半自動ChatGPT採点版
+</div>
+
+<script>
+const problems = [
+{c:"環境",q:"Do you think big cities should have more public parks?",p:["health","environment"]},
+{c:"食事",q:"Do you think convenience stores are a good place to buy food?",p:["convenience","health"]},
+{c:"社会",q:"Do you think convenience stores should open twenty-four hours a day?",p:["convenience","workers"]},
+{c:"電子機器",q:"Do you think high school students spend too much time watching TV?",p:["health","study"]},
+{c:"外国・都市",q:"Do you think it is better for people to live in a big city?",p:["convenience","cost"]},
+{c:"AI・教育",q:"Do you think it is a good idea for students to use AI tools to study?",p:["learning","dependence"]},
+{c:"環境",q:"Do you think it is a good idea to grow flowers or vegetables in your garden?",p:["health","environment"]},
+{c:"教育",q:"Do you think it is a good idea to study while listening to music?",p:["concentration","relaxation"]},
+{c:"動物",q:"Do you think it is good for people to have a pet?",p:["responsibility","companionship"]},
+{c:"教育・仕事",q:"Do you think it is good for students to have a part-time job while in school?",p:["experience","study"]},
+{c:"環境・買物",q:"Do you think it is good to buy used products such as used books and clothes?",p:["cost","environment"]},
+{c:"環境",q:"Do you think it is important for people to reduce their use of plastic?",p:["environment","convenience"]},
+{c:"電子機器",q:"Do you think it is important for students to have a tablet computer?",p:["learning","cost"]},
+{c:"教育・文化",q:"Do you think it is important to learn ancient literature such as Kobun and Kanbun?",p:["culture","usefulness"]},
+{c:"外国・言語",q:"Do you think Japanese people should speak another language?",p:["communication","opportunities"]},
+{c:"教育・英語",q:"Do you think junior high schools should have more English classes for their students?",p:["communication","workload"]},
+{c:"外国・旅行",q:"Do you think more foreigners will visit Japan in the future?",p:["tourism","culture"]},
+{c:"外国・スポーツ",q:"Do you think more Japanese sports players will go abroad to play for foreign teams?",p:["experience","communication"]},
+{c:"健康",q:"Do you think more people will be careful about their health in the future?",p:["information","lifestyle"]},
+{c:"教育・IT",q:"Do you think more people will go to computer schools in the future?",p:["jobs","technology"]},
+{c:"健康",q:"Do you think more people will go to fitness clubs in the future?",p:["health","cost"]},
+{c:"環境・車",q:"Do you think more people will use electric cars in the future?",p:["environment","price"]},
+{c:"健康",q:"Do you think people should spend more time outdoors?",p:["health","safety"]},
+{c:"環境・交通",q:"Do you think people should use trains more in their everyday lives?",p:["environment","convenience"]},
+{c:"電子機器",q:"Do you think smartphones should be allowed during class?",p:["learning","distraction"]},
+{c:"環境・教育",q:"Do you think students should do more to help the environment?",p:["responsibility","impact"]},
+{c:"教育",q:"Do you think students should learn typewriting more than handwriting?",p:["speed","memory"]},
+{c:"食事・文化",q:"Do you think sushi restaurants will become more popular in the future?",p:["health","culture"]},
+{c:"環境・地域",q:"Do you think there should be more trash cans in your town?",p:["cleanliness","cost"]},
+{c:"地域・買物",q:"Do you think there will be more shops at train stations in the future?",p:["convenience","space"]},
+{c:"交通",q:"Do you think traveling by train is better than traveling by car?",p:["environment","flexibility"]},
+{c:"家族",q:"Should children talk with their parents about school life?",p:["support","communication"]},
+{c:"教育",q:"Should schools have more events for students?",p:["friendship","study time"]},
+{c:"教育・英語",q:"Should students use the internet to study English?",p:["access","reliability"]},
+{c:"家族・電子機器",q:"What is the best age for children to have a smartphone?",p:["safety","responsibility"]},
+{c:"旅行",q:"What is the best season to take a vacation?",p:["weather","cost"]},
+{c:"健康",q:"What should people do to avoid stress?",p:["exercise","rest"]},
+{c:"子ども",q:"Which do you think is better for children, indoors or outdoors?",p:["safety","health"]},
+{c:"教育",q:"Which do you think is better for students, studying at home or school?",p:["concentration","support"]},
+{c:"仕事",q:"Which do you think is better for you, working alone or in a team?",p:["efficiency","communication"]},
+{c:"自作",q:"CUSTOM",p:["POINT 1","POINT 2"]}
+];
+
+const $ = id => document.getElementById(id);
+const select = $("problemSelect");
+
+problems.forEach((problem,index)=>{
+  const option=document.createElement("option");
+  option.value=index;
+  option.textContent=problem.q==="CUSTOM"
+    ? "自分で問題を作る"
+    : `${index+1}.【${problem.c}】${problem.q}`;
+  select.appendChild(option);
+});
+
+function renderProblem(){
+  const problem=problems[Number(select.value)];
+  $("pointsBox").innerHTML="";
+
+  if(problem.q==="CUSTOM"){
+    $("questionText").innerHTML=`
+      <input id="customQuestion" value="Do you think ...?">
+      <div class="miniGrid" style="margin-top:10px">
+        <input id="customPoint1" value="POINT 1">
+        <input id="customPoint2" value="POINT 2">
+      </div>`;
+    return;
+  }
+
+  $("questionText").textContent=problem.q;
+
+  problem.p.forEach(point=>{
+    const span=document.createElement("span");
+    span.className="pill";
+    span.textContent=point;
+    $("pointsBox").appendChild(span);
+  });
+}
+
+function currentProblem(){
+  const problem=problems[Number(select.value)];
+
+  if(problem.q!=="CUSTOM") return problem;
+
+  return {
+    c:"自作",
+    q:$("customQuestion")?.value.trim() || "Do you think ...?",
+    p:[
+      $("customPoint1")?.value.trim() || "POINT 1",
+      $("customPoint2")?.value.trim() || "POINT 2"
+    ]
+  };
+}
+
+function countWords(text){
+  return (text.trim().match(/[A-Za-z]+(?:['’-][A-Za-z]+)*/g)||[]).length;
+}
+
+function updateCount(){
+  const number=countWords($("essay").value);
+  $("wordCounter").textContent=`${number} words`;
+  $("wordCounter").className=
+    "counter "+(number>=50&&number<=60?"ok":number<50?"short":"long");
+}
+
+function buildPrompt(){
+  const problem=currentProblem();
+  const essay=$("essay").value.trim();
+  const name=$("studentName").value.trim();
+  const wordCount=countWords(essay);
+
+  return `英検準2級ライティングとして、以下の答案だけを毎回ゼロから採点してください。
+この会話内の以前の答案や以前の採点結果には影響されないでください。
+
+【名前】
+${name || "未入力"}
+
+【QUESTION】
+${problem.q}
+
+【POINTS】
+${problem.p.join(" / ")}
+
+【指定語数】
+50〜60語
+
+【答案】
+${essay}
+
+【機械的に数えた語数】
+${wordCount}語
+
+【重要な採点方針】
+・内容、構成、語彙、文法を各0〜4点、合計16点で採点する。
+・英検準2級として、意味が十分通じる軽い不自然さだけで厳しく減点しない。
+・文法、語法、冠詞、単数複数、主語と動詞の一致、助動詞、
+  不定詞、動名詞、前置詞、語順、スペリング、句読法の
+  明確な誤りは、答案に出てくる順番ですべて指摘する。
+・同じ一つの誤りを複数の項目として重複して数えない。
+・errorsのoriginalには、答案中に実際に存在する文字列を
+  大文字小文字も含めて正確にコピーする。
+・同じ誤りが複数回ある場合は、別々のerrorsとして記録する。
+・POINTSは二つとも使用する必要はない。
+・少なくとも一つのPOINT、またはそのPOINTに明確に関連する内容を
+  理由として使用していれば、POINTSに関する減点をしない。
+・二つのPOINTSを両方とも無視している場合だけ、内容点を1点下げる。
+・「明確な誤り」と「より自然な表現の提案」を必ず区別する。
+・より自然な表現の提案だけでは文法点を下げない。
+・文法点は極端に厳しくしない。
+  明確な軽い誤りが1〜2個なら通常は3点を目安にし、
+  意味を大きく妨げる誤りや基本的な誤りが複数ある場合に2点以下を検討する。
+・弱点と、次回見直すべき点を具体的な日本語で示す。
+・corrected_essayは、元の内容を保ち、明確な誤りだけを直す。
+・improved_essayは、元の意見と理由を保った自然な50〜60語にする。
+
+次のJSON形式だけを返してください。
+説明文、Markdown、コードフェンスは付けないでください。
+
+{
+  "scores":{
+    "content":0,
+    "organization":0,
+    "vocabulary":0,
+    "grammar":0
+  },
+  "word_count":0,
+  "strengths":[""],
+  "errors":[
+    {
+      "original":"",
+      "correction":"",
+      "rule":"",
+      "category":"grammar"
+    }
+  ],
+  "style_suggestions":[
+    {
+      "original":"",
+      "suggestion":"",
+      "reason":""
+    }
+  ],
+  "weaknesses":[""],
+  "review_points":[""],
+  "points_used":{
+    "used":true,
+    "details":"",
+    "deduction":0
+  },
+  "corrected_essay":"",
+  "improved_essay":""
+}
+
+誤りがない配列は空配列 [] にしてください。`;
+}
+
+async function copyText(text){
+  if(navigator.clipboard && window.isSecureContext){
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+
+  const temporary=document.createElement("textarea");
+  temporary.value=text;
+  temporary.style.position="fixed";
+  temporary.style.left="-9999px";
+  document.body.appendChild(temporary);
+  temporary.focus();
+  temporary.select();
+
+  const success=document.execCommand("copy");
+  temporary.remove();
+
+  if(!success) throw new Error("コピーに失敗しました");
+}
+
+function escapeHtml(value){
+  return String(value??"").replace(/[&<>"']/g,character=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",
+    '"':"&quot;","'":"&#39;"
+  })[character]);
+}
+
+function stripCodeFence(text){
+  let cleaned=text.trim();
+  cleaned=cleaned.replace(/^```(?:json)?\s*/i,"");
+  cleaned=cleaned.replace(/\s*```$/,"");
+
+  const first=cleaned.indexOf("{");
+  const last=cleaned.lastIndexOf("}");
+
+  if(first>=0 && last>first){
+    cleaned=cleaned.slice(first,last+1);
+  }
+
+  return cleaned;
+}
+
+function validScore(value){
+  const number=Number(value);
+  return Number.isFinite(number)
+    ? Math.max(0,Math.min(4,Math.round(number)))
+    : 0;
+}
+
+function getRanges(text,data){
+  const ranges=[];
+
+  const addRanges=(items,type)=>{
+    (items||[]).forEach((item,itemIndex)=>{
+      const phrase=String(item.original||"").trim();
+      if(!phrase) return;
+
+      const lowerText=text.toLowerCase();
+      const lowerPhrase=phrase.toLowerCase();
+      let position=0;
+
+      while(position<text.length){
+        const start=lowerText.indexOf(lowerPhrase,position);
+        if(start<0) break;
+
+        ranges.push({
+          start,
+          end:start+phrase.length,
+          type,
+          itemIndex,
+          length:phrase.length
+        });
+
+        position=start+Math.max(1,phrase.length);
+      }
+    });
+  };
+
+  addRanges(data.errors,"error");
+  addRanges(data.style_suggestions,"style");
+
+  ranges.sort((a,b)=>
+    a.start-b.start ||
+    (a.type==="error"?-1:1) ||
+    b.length-a.length
+  );
+
+  const accepted=[];
+  ranges.forEach(range=>{
+    const overlaps=accepted.some(existing=>
+      range.start<existing.end && range.end>existing.start
+    );
+
+    if(!overlaps) accepted.push(range);
+  });
+
+  return accepted.sort((a,b)=>a.start-b.start);
+}
+
+function annotateEssay(text,data){
+  const ranges=getRanges(text,data);
+
+  if(!ranges.length) return escapeHtml(text);
+
+  let output="";
+  let position=0;
+
+  ranges.forEach(range=>{
+    output+=escapeHtml(text.slice(position,range.start));
+
+    const className=range.type==="error"
+      ? "errorUnderline"
+      : "styleUnderline";
+
+    output+=`<span class="${className}">${
+      escapeHtml(text.slice(range.start,range.end))
+    }</span>`;
+
+    position=range.end;
+  });
+
+  output+=escapeHtml(text.slice(position));
+  return output;
+}
+
+function renderList(element,items,emptyText){
+  const values=(items||[]).filter(Boolean);
+
+  element.innerHTML=values.length
+    ? values.map(item=>`<li>${escapeHtml(item)}</li>`).join("")
+    : `<li>${escapeHtml(emptyText)}</li>`;
+}
+
+function renderResult(data){
+  const problem=currentProblem();
+  const originalEssay=$("essay").value.trim();
+
+  const content=validScore(data.scores?.content);
+  const organization=validScore(data.scores?.organization);
+  const vocabulary=validScore(data.scores?.vocabulary);
+  const grammar=validScore(data.scores?.grammar);
+  const total=content+organization+vocabulary+grammar;
+
+  $("emptyResult").classList.add("hidden");
+  $("result").classList.remove("hidden");
+
+  $("resultName").textContent=$("studentName").value.trim()||"未入力";
+  $("resultQuestion").textContent=problem.q;
+  $("resultPoints").textContent=problem.p.join(" / ");
+
+  $("totalScore").textContent=total;
+  $("level").textContent=
+    total>=14?"とてもよい":
+    total>=11?"合格圏":
+    total>=8?"もう一歩":
+    "基本を見直そう";
+
+  const aiWordCount=Number(data.word_count);
+  const wordCount=Number.isFinite(aiWordCount)
+    ? aiWordCount
+    : countWords(originalEssay);
+
+  $("resultWordCount").textContent=
+    `${wordCount} words ｜ ${
+      wordCount>=50&&wordCount<=60
+        ?"50〜60語に収まっています"
+        :"50〜60語に調整しましょう"
+    }`;
+
+  const scoreItems=[
+    ["内容",content],
+    ["構成",organization],
+    ["語彙",vocabulary],
+    ["文法",grammar]
+  ];
+
+  $("rubric").innerHTML=scoreItems.map(([label,score])=>`
+    <div class="rubricItem">
+      <div class="rubricTop">
+        <span>${label}</span><span>${score} / 4</span>
+      </div>
+      <div class="bar"><span style="width:${score*25}%"></span></div>
+    </div>
+  `).join("");
+
+  $("annotatedEssay").innerHTML=annotateEssay(originalEssay,data);
+
+  renderList(
+    $("strengthList"),
+    data.strengths,
+    "特に記載された長所はありません。"
+  );
+
+  const errors=(data.errors||[]).filter(item=>
+    item && (item.original||item.correction||item.rule)
+  );
+
+  $("errorList").innerHTML=errors.length
+    ? errors.map((item,index)=>`
+      <div class="errorCard">
+        <div class="errorTitle">間違い ${index+1}</div>
+        <div><b>誤り：</b><u>${escapeHtml(item.original)}</u></div>
+        <div><b>修正：</b>${escapeHtml(item.correction)}</div>
+        <div><b>復習ルール：</b>${escapeHtml(item.rule)}</div>
+      </div>
+    `).join("")
+    : `<div class="pointCard">
+        明確な文法・スペリングの誤りはありません。
+      </div>`;
+
+  const styles=(data.style_suggestions||[]).filter(item=>
+    item && (item.original||item.suggestion||item.reason)
+  );
+
+  $("styleList").innerHTML=styles.length
+    ? styles.map((item,index)=>`
+      <div class="styleCard">
+        <div class="styleTitle">表現提案 ${index+1}</div>
+        <div><b>元：</b>${escapeHtml(item.original)}</div>
+        <div><b>提案：</b>${escapeHtml(item.suggestion)}</div>
+        <div><b>理由：</b>${escapeHtml(item.reason)}</div>
+      </div>
+    `).join("")
+    : `<div class="pointCard">特になし</div>`;
+
+  renderList(
+    $("weaknessList"),
+    data.weaknesses,
+    "大きな弱点は指摘されていません。"
+  );
+
+  const reviews=(data.review_points||[]).filter(Boolean);
+
+  $("reviewList").innerHTML=reviews.length
+    ? reviews.map((item,index)=>`
+      <div class="reviewCard">
+        <div class="reviewTitle">見直し ${index+1}</div>
+        <div>${escapeHtml(item)}</div>
+      </div>
+    `).join("")
+    : `<div class="pointCard">
+        今回、特に追加された見直し事項はありません。
+      </div>`;
+
+  const pointData=data.points_used||{};
+  $("pointsResult").innerHTML=`
+    <div><b>使用：</b>${pointData.used===false?"なし":"あり"}</div>
+    <div>${escapeHtml(pointData.details||"説明なし")}</div>
+    <div><b>内容点の減点：</b>${
+      Number(pointData.deduction)||0
+    }点</div>
+  `;
+
+  $("correctedEssay").textContent=data.corrected_essay||originalEssay;
+  $("improvedEssay").textContent=data.improved_essay||"";
+
+  $("resultCard").scrollIntoView({
+    behavior:"smooth",block:"start"
+  });
+}
+
+select.addEventListener("change",renderProblem);
+$("essay").addEventListener("input",updateCount);
+
+$("copyPromptBtn").addEventListener("click",async()=>{
+  const essay=$("essay").value.trim();
+
+  if(countWords(essay)<5){
+    alert("先に作文を入力してください。");
+    return;
+  }
+
+  const prompt=buildPrompt();
+  $("promptPreview").value=prompt;
+  $("copyPromptBtn").disabled=true;
+  $("copyStatus").textContent="コピーしています…";
+
+  try{
+    await copyText(prompt);
+    $("copyStatus").textContent=
+      "✓ コピーしました。ChatGPTを開いて貼り付け、送信してください。";
+  }catch(error){
+    $("copyStatus").textContent=
+      "自動コピーできませんでした。下の採点指示を手動でコピーしてください。";
+    document.querySelector("details").open=true;
+    $("promptPreview").focus();
+    $("promptPreview").select();
+  }finally{
+    $("copyPromptBtn").disabled=false;
+  }
+});
+
+$("renderBtn").addEventListener("click",()=>{
+  $("jsonStatus").textContent="";
+
+  try{
+    const text=stripCodeFence($("jsonInput").value);
+    if(!text) throw new Error("JSONが貼り付けられていません。");
+
+    const data=JSON.parse(text);
+
+    if(!data.scores){
+      throw new Error("scoresが見つかりません。");
+    }
+
+    renderResult(data);
+    $("jsonStatus").textContent="✓ 採点結果を表示しました。";
+  }catch(error){
+    console.error(error);
+    $("jsonStatus").textContent=
+      "JSONを読み込めませんでした。ChatGPTの回答全体をそのまま貼り付けてください。";
+    alert(
+      "採点結果の読み込みに失敗しました。\n\n"+
+      error.message+
+      "\n\nChatGPTに「JSONだけをもう一度出してください」と伝えてください。"
+    );
+  }
+});
+
+$("clearBtn").addEventListener("click",()=>{
+  $("studentName").value="";
+  $("essay").value="";
+  $("jsonInput").value="";
+  $("promptPreview").value="";
+  $("copyStatus").textContent="";
+  $("jsonStatus").textContent="";
+  $("result").classList.add("hidden");
+  $("emptyResult").classList.remove("hidden");
+  updateCount();
+});
+
+$("pdfBtn").addEventListener("click",()=>window.print());
+
+renderProblem();
+updateCount();
+</script>
+</body>
+</html>
